@@ -22,16 +22,8 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5001;
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL || "http://localhost:3001",
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieparser());
-
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is running" });
@@ -40,12 +32,6 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/user", userRoutes);
-
-app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
-});
 
 // Start the server
 server.listen(PORT, () => {
