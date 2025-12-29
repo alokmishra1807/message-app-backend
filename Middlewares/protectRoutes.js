@@ -3,14 +3,16 @@ import User from "../Models/user.modal.js";
 
 const protectRoutes = async (req, res, next) => {
   try {
-    const token = req.cookies.jwt;
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      return res.status(401).json({ error: "Unautherized" });
+      return res
+        .status(401)
+        .json({ error: "Unautherized - No token provided" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (!decoded) {
-      return res.status(401).json({ error: "Unautherized" });
+      return res.status(401).json({ error: "Unautherized - Invalid token" });
     }
     const user = await User.findById(decoded.userId).select("-password");
     if (!user) {
@@ -24,4 +26,4 @@ const protectRoutes = async (req, res, next) => {
   }
 };
 
-export default protectRoutes
+export default protectRoutes;

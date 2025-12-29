@@ -8,7 +8,6 @@ import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js";
 
 import connectToMongoose from "./db/connectToMongoose.js";
-import cookieparser from "cookie-parser";
 
 import { app, server } from "./Soket/soket.js";
 
@@ -23,7 +22,6 @@ dotenv.config();
 const PORT = process.env.PORT || 5001;
 
 app.use(express.json());
-app.use(cookieparser());
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is running" });
