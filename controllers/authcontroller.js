@@ -78,7 +78,21 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    res.status(200).json({ message: "Logged Out successfully" });
+    // Verify user is authenticated
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized - No user authenticated" });
+    }
+
+    // In token-based auth, logout is handled on the client side
+    // by deleting the stored token. Server doesn't need to do anything.
+    // For additional security, you can implement token blacklisting in the future.
+
+    res.status(200).json({
+      message: "Logged Out successfully",
+      userId: req.user._id,
+    });
   } catch (error) {
     console.log("Error in logout controller:", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
